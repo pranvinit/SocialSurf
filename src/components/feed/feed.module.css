@@ -1,0 +1,16 @@
+.feed {
+  flex: 4;
+}
+.feed h3 {
+  font-size: 2rem;
+}
+.feedWrapper {
+  padding: 20px;
+}
+
+.spinner {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

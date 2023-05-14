@@ -8,7 +8,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { auth } from "./firebase";
 
 //action creators, selector functions imports
-import { authSelector, fetchUser, setUser } from "./redux/reducers/authReducer";
+import {
+  authSelector,
+  authenticateUserAsync,
+  fetchUser,
+} from "./redux/reducers/authReducer";
 
 // pages imports
 import Register from "./pages/register/Register";
@@ -60,7 +64,7 @@ function App() {
           ),
         },
         {
-          path: "/posts/:id",
+          path: "/users/:uid/posts/:postId",
           element: (
             <ProtectedRoute>
               <PostDetails />
@@ -76,8 +80,7 @@ function App() {
   useEffect(() => {
     dispatch(fetchUser());
     const unsub = onAuthStateChanged(auth, (user) => {
-      console.log(user);
-      dispatch(setUser(user));
+      dispatch(authenticateUserAsync(user?.uid));
     });
 
     return () => {

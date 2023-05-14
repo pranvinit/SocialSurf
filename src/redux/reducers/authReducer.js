@@ -1,4 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createReducer,
+  createSlice,
+  current,
+} from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -8,7 +13,7 @@ import {
 import { toast } from "react-toastify";
 
 import { auth, db } from "../../firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export const THEMES = { default: "LIGHT", dark: "DARK" };
 
@@ -18,6 +23,16 @@ const INITIAL_STATE = {
   error: null,
   preferences: { theme: THEMES.default },
 };
+
+export const authenticateUserAsync = createAsyncThunk(
+  "auth/authenticateUser",
+  async (uid, thunkAPI) => {
+    if (!uid) return thunkAPI.dispatch(setUser({}));
+    const docRef = doc(db, "users", uid);
+    const currentUser = await getDoc(docRef);
+    thunkAPI.dispatch(setUser(currentUser.data()));
+  }
+);
 
 export const registerUserAsync = createAsyncThunk(
   "auth/registerUser",

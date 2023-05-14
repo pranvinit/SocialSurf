@@ -1,0 +1,78 @@
+.sidebar {
+  flex: 2;
+  padding: 20px;
+}
+
+.sidebar h3 {
+  font-size: 2rem;
+}
+
+.spinner {
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.usersList {
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 10px;
+  padding: 20px 10px;
+  height: calc(100vh - 75px - 110px);
+  overflow-y: scroll;
+  position: sticky;
+  top: 110px;
+  margin-top: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.user {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 2rem;
+  display: flex;
+  width: 80%;
+  display: flex;
+  align-items: center;
+}
+
+.user div:nth-of-type(1) {
+  background-color: #4267b2;
+  color: #fff;
+  font-weight: 800;
+  font-size: 2.5rem;
+  width: 60px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.user div:nth-of-type(2) {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-left: 10px;
+}
+.user button {
+  outline: none;
+  border: none;
+  background-color: #000;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 5px 15px;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 10px;
+}
+.user .unfollow {
+  background-color: #f00;
+  color: #fff;
+}

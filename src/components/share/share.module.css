@@ -6,6 +6,7 @@
   width: 60vw;
   margin: 50px auto;
   border-radius: 2rem;
+  background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
@@ -95,4 +96,8 @@ label:hover {
 
 .shareButton:hover {
   transform: scale(0.9);
+}
+
+.shareButton:disabled {
+  cursor: not-allowed;
 }

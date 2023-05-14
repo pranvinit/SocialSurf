@@ -10,17 +10,53 @@ import {
   getDocs,
   orderBy,
   query,
+  setDoc,
 } from "firebase/firestore";
 
 const INITIAL_STATE = { posts: [], isLoading: false, error: null };
+export const getPostsAsync = createAsyncThunk(
+  "posts/fetchPosts",
+  async (currentUser) => {
+    const postsRef = collection(db, "users", currentUser.uid, "posts");
+    const userPosts = await getDocs(
+      query(postsRef, orderBy("created", "desc"))
+    );
+
+    const userFeed = await Promise.all(
+      currentUser.following.map((uid) => {
+        const postsRef = collection(db, "users", uid, "posts");
+        return getDocs(query(postsRef, orderBy("created", "desc")));
+      })
+    );
+
+    let userFeedData = [];
+    userFeed.forEach((d) => {
+      d.docs.forEach((doc) => {
+        const data = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        userFeedData.push(data);
+      });
+    });
+
+    const postsData = userPosts.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return [...userFeedData, ...postsData];
+  }
+);
 
 export const createPostAsync = createAsyncThunk(
   "posts/createPost",
-  async ({ uid, text, file }) => {
-    const storageRef = ref(storage, `${Date.now()}`);
-    await uploadBytesResumable(storageRef, file);
-    const downloadUrl = await getDownloadURL(storageRef);
-    console.log(downloadUrl);
+  async ({ uid, displayName, text, file }) => {
+    let downloadUrl = null;
+    if (file) {
+      const storageRef = ref(storage, `${Date.now()}`);
+      await uploadBytesResumable(storageRef, file);
+      downloadUrl = await getDownloadURL(storageRef);
+    }
 
     // create post here
     const post = {
@@ -29,19 +65,83 @@ export const createPostAsync = createAsyncThunk(
       created: Timestamp.now(),
       likes: [],
       dislikes: [],
+      commentsCount: 0,
+      uid,
+      displayName,
     };
-    return addDoc(doc(db, "users", uid, "posts"), post);
+    const postsRef = collection(db, "users", uid, "posts");
+    const docRef = await addDoc(postsRef, post);
+    return { id: docRef.id, ...post };
   }
 );
 
-export const getPostsAsync = createAsyncThunk(
-  "posts/fetchPosts",
-  async (uid, thunkAPI) => {
-    const postsRef = collection(db, "users", uid, "posts");
-    const userPosts = await getDocs(
-      query(postsRef, orderBy("created", "desc"))
-    );
-    return userPosts;
+export const likePostAsync = createAsyncThunk(
+  "posts/likePost",
+  async ({ post, currentUserId }, thunkAPI) => {
+    try {
+      const postRef = doc(db, "users", post.uid, "posts", post.id);
+      const updatedPost = {
+        ...post,
+        likes: [currentUserId, ...post.likes],
+        dislikes: post.dislikes.filter((d) => d !== currentUserId),
+      };
+      await setDoc(postRef, updatedPost);
+      thunkAPI.dispatch(setUpdatedPosts(updatedPost));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+);
+
+export const removeLikePostAsync = createAsyncThunk(
+  "posts/removeLikePost",
+  async ({ post, currentUserId }, thunkAPI) => {
+    try {
+      const postRef = doc(db, "users", post.uid, "posts", post.id);
+      const updatedPost = {
+        ...post,
+        likes: post.likes.filter((l) => l !== currentUserId),
+      };
+      await setDoc(postRef, updatedPost);
+      thunkAPI.dispatch(setUpdatedPosts(updatedPost));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+);
+
+export const dislikePostAsync = createAsyncThunk(
+  "posts/dislikePost",
+  async ({ post, currentUserId }, thunkAPI) => {
+    try {
+      const postRef = doc(db, "users", post.uid, "posts", post.id);
+      const updatedPost = {
+        ...post,
+        likes: post.likes.filter((l) => l !== currentUserId),
+        dislikes: [currentUserId, ...post.dislikes],
+      };
+      await setDoc(postRef, updatedPost);
+      thunkAPI.dispatch(setUpdatedPosts(updatedPost));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+);
+
+export const removeDislikePostAsync = createAsyncThunk(
+  "posts/removeDislikePost",
+  async ({ post, currentUserId }, thunkAPI) => {
+    try {
+      const postRef = doc(db, "users", post.uid, "posts", post.id);
+      const updatedPost = {
+        ...post,
+        dislikes: post.dislikes.filter((d) => d !== currentUserId),
+      };
+      await setDoc(postRef, updatedPost);
+      thunkAPI.dispatch(setUpdatedPosts(updatedPost));
+    } catch (e) {
+      console.log(e);
+    }
   }
 );
 
@@ -49,8 +149,14 @@ const postSlice = createSlice({
   name: "posts",
   initialState: INITIAL_STATE,
   reducers: {
-    setPosts: (state, { payload }) => {
-      state.posts = payload.userPosts;
+    setUpdatedPosts: (state, { payload }) => {
+      const updatedPosts = state.posts.map((p) => {
+        if (p.id === payload.id) {
+          return payload;
+        }
+        return p;
+      });
+      state.posts = updatedPosts;
       state.isLoading = false;
     },
   },
@@ -64,8 +170,10 @@ const postSlice = createSlice({
         state.error = action.error.message;
         toast.error(action.error.message);
       })
-      .addCase(createPostAsync.fulfilled, (state, action) => {
+      .addCase(createPostAsync.fulfilled, (state, { payload }) => {
+        state.posts.unshift(payload);
         state.isLoading = false;
+        toast.success("Post added successfully.");
       })
       .addCase(getPostsAsync.pending, (state, action) => {
         state.isLoading = true;
@@ -76,13 +184,13 @@ const postSlice = createSlice({
         toast.error(action.error.message);
       })
       .addCase(getPostsAsync.fulfilled, (state, { payload }) => {
-        state.posts = payload.userPosts;
+        state.posts = payload;
         state.isLoading = false;
       });
   },
 });
 
 export const postsReducer = postSlice.reducer;
-export const { setPosts } = postSlice.actions;
+export const { setUpdatedPosts } = postSlice.actions;
 
 export const postsSelector = (state) => state.postsReducer;

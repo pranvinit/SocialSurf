@@ -3,3 +3,16 @@
   padding: 0;
   font-family: "Open Sans", sans-serif;
 }
+
+/* changing default scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #b3b3b3;
+}

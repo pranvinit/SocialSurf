@@ -3,21 +3,37 @@ import autosize from "autosize";
 import { useDispatch, useSelector } from "react-redux";
 import { authSelector } from "../../redux/reducers/authReducer";
 import Spinner from "react-spinner-material";
-import { createPostAsync } from "../../redux/reducers/postsReducer";
+import {
+  createPostAsync,
+  postsSelector,
+} from "../../redux/reducers/postsReducer";
 import styles from "./share.module.css";
 
 const Share = () => {
   const { currentUser } = useSelector(authSelector);
+  const { isLoading } = useSelector(postsSelector);
+  const [text, setText] = useState("");
   const [file, setFile] = useState(null);
   const textbox = useRef(null);
 
   const dispatch = useDispatch();
+  const resetInput = () => {
+    setText("");
+    setFile(null);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!textbox.current.value) return;
-    const text = textbox.current.value;
-    dispatch(createPostAsync({ uid: currentUser.uid, text, file }));
+    if (!text) return;
+    await dispatch(
+      createPostAsync({
+        uid: currentUser.uid,
+        displayName: currentUser.displayName,
+        text,
+        file,
+      })
+    );
+    resetInput();
   };
 
   useEffect(() => {
@@ -32,8 +48,11 @@ const Share = () => {
           <textarea
             name="share"
             ref={textbox}
+            value={text}
+            onChange={({ target }) => setText(target.value)}
             placeholder={`What's on your mind ${currentUser.displayName}`}
             rows={1}
+            required
           ></textarea>
         </form>
         <hr className={styles.shareHr} />
@@ -68,8 +87,12 @@ const Share = () => {
             />
             <span className={styles.shareLabel}>Upload Media</span>
           </label>
-          <button className={styles.shareButton} onClick={handleSubmit}>
-            {!false ? "Share" : <Spinner />}
+          <button
+            className={styles.shareButton}
+            onClick={handleSubmit}
+            disabled={!text && !file}
+          >
+            {!isLoading ? "Share" : <Spinner color="#fff" />}
           </button>
         </div>
       </div>

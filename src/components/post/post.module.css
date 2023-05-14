@@ -1,0 +1,91 @@
+.post {
+  width: 100%;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  margin-block: 30px;
+}
+
+.post:nth-of-type(1) {
+  margin-top: 10px;
+}
+
+.postWrapper {
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.postTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.postProfileImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.postUsername {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.postDate {
+  font-size: 14px;
+}
+
+.postCenter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.postText {
+  font-size: 18px;
+}
+
+.postImg {
+  width: 100%;
+  max-height: 750px;
+  object-fit: cover;
+}
+
+.postBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.postBottomItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.postBottomItem img {
+  width: 30px;
+  padding: 5px;
+  border-radius: 5px;
+}
+.postBottomItem span {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.postBottomItem:hover > img {
+  background-color: #f2f2f2;
+}
+
+.postBottomItem:hover > span {
+  color: #1ca0f2;
+}
