@@ -1,0 +1,79 @@
+.spinner {
+  min-height: calc(100vh - 75px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login {
+  height: calc(100vh - 80px);
+  background-color: #f0f2f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.box {
+  padding: 30px;
+  width: 350px;
+  height: 400px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  background-color: #fff;
+}
+
+.box h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.field input {
+  border: 1px solid transparent;
+  outline: none;
+  padding: 10px;
+  font-size: 1.05rem;
+  background-color: rgb(244, 244, 244);
+}
+.field input:focus {
+  border-color: #000;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.actions button {
+  border: none;
+  padding-block: 10px;
+  font-size: 1.1rem;
+  color: #fff;
+  transition: 0.2ms;
+  cursor: pointer;
+  transition: 0.2ms;
+  background-color: #1ca0f2;
+  cursor: pointer;
+}
+.actions .cancel {
+  background-color: #f21c1c;
+}
+.actions button:disabled {
+  cursor: not-allowed;
+}
+.actions button:hover {
+  opacity: 0.6;
+}
+
+.create span {
+  padding-right: 5px;
+}
