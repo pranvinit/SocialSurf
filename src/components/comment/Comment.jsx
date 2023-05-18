@@ -69,8 +69,7 @@ export const Comment = ({ userId, postId, setComments, commentsCount }) => {
             required
           ></textarea>
         </div>
-        <hr className={styles.shareHr} />
-        <div className={styles.bottom}>
+        <div className={styles.commentBottom}>
           <button
             className={styles.commentButton}
             onClick={resetInput}

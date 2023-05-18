@@ -55,8 +55,13 @@ a[class="active"] {
   cursor: pointer;
 }
 
-.profile img {
+.profile img,
+.searchIcon {
   width: 50px;
+}
+
+.searchIcon {
+  cursor: pointer;
 }
 
 .profile span,
@@ -74,4 +79,16 @@ a[class="active"] {
 .logout:hover {
   color: #d63c3d;
   background-color: #ffeeee;
+}
+
+.search {
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0 0, 0, 0.5);
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
 }

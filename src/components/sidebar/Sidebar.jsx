@@ -24,7 +24,9 @@ export const Sidebar = () => {
     }));
 
     // can add more conditions here
-    const filteredUserData = usersData.filter((u) => u.uid !== currentUser.uid);
+    const filteredUserData = usersData.filter(
+      (u) => u.uid !== currentUser.uid && u.isFollowing
+    );
 
     setUsers(filteredUserData);
     setLoading(false);
@@ -55,7 +57,7 @@ export const Sidebar = () => {
   }, []);
   return (
     <div className={styles.sidebar}>
-      <h3>Active Users</h3>
+      <h3>Following</h3>
       {loading && (
         <div className={styles.spinner}>
           <Spinner />

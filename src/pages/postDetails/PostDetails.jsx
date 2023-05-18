@@ -55,10 +55,10 @@ const PostDetails = () => {
   }, []);
 
   return (
-    <div>
+    <div className={styles.postDetails}>
       <div className={styles.postDetailsTop}>
+        <img onClick={() => navigate("/")} src="/assets/back.png" alt="back" />
         <h3>Post</h3>
-        <button onClick={() => navigate("/")}>Back</button>
       </div>
       <div className={styles.postDetailsCenter}>
         {!post && (
@@ -83,6 +83,7 @@ const PostDetails = () => {
             commentsCount={comments.length}
           />
         )}
+        <hr className={styles.commentHr} />
         {comments.map((c) => (
           <div key={c.id}>
             <div className={styles.commentTop}>

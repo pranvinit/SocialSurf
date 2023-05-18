@@ -1,0 +1,33 @@
+.postDetails {
+  width: 60vw;
+  margin: 0 auto;
+  padding-block: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.spinner {
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.postDetailsTop {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.postDetailsTop h3 {
+  font-size: 2rem;
+}
+.postDetailsTop img {
+  width: 40px;
+  cursor: pointer;
+}
+
+.commentHr {
+  margin-block: 10px;
+}
