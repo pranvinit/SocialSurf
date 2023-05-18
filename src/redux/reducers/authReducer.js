@@ -1,9 +1,4 @@
-import {
-  createAsyncThunk,
-  createReducer,
-  createSlice,
-  current,
-} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -12,8 +7,9 @@ import {
 } from "firebase/auth";
 import { toast } from "react-toastify";
 
-import { auth, db } from "../../firebase";
+import { auth, db, storage } from "../../firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 export const THEMES = { default: "LIGHT", dark: "DARK" };
 
@@ -36,16 +32,24 @@ export const authenticateUserAsync = createAsyncThunk(
 
 export const registerUserAsync = createAsyncThunk(
   "auth/registerUser",
-  async ({ displayName, email, password }) => {
+  async ({ displayName, email, password, file }) => {
     const res = await createUserWithEmailAndPassword(auth, email, password);
+    let downloadUrl = null;
+    if (file) {
+      const storageRef = ref(storage, `${Date.now()}`);
+      await uploadBytesResumable(storageRef, file);
+      downloadUrl = await getDownloadURL(storageRef);
+    }
 
     await updateProfile(auth.currentUser, {
       displayName,
+      profilePicture: downloadUrl,
     });
     // create a new user in firestore
     const user = {
       uid: res.user.uid,
       displayName,
+      profilePicture: downloadUrl,
       email,
       followers: [],
       following: [],

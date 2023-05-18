@@ -1,3 +1,7 @@
+.hiddenInput {
+  display: none;
+}
+
 .register {
   height: calc(100vh - 80px);
   background-color: #f0f2f5;
@@ -8,8 +12,8 @@
 
 .box {
   padding: 30px;
-  width: 350px;
-  height: 450px;
+  width: 450px;
+  height: 500px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   display: flex;
   flex-direction: column;
@@ -22,6 +26,25 @@
   font-size: 1.5rem;
   font-weight: 600;
   text-align: center;
+}
+
+.fileInputLabel {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.fileInputLabel img {
+  padding: 10px;
+  width: 75px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.fileInputLabel img:hover {
+  background-color: #d6ebff;
 }
 
 .field {
@@ -42,11 +65,12 @@
 
 .actions {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  gap: 30px;
 }
 
 .actions button {
+  flex: 1;
   border: none;
   padding-block: 10px;
   font-size: 1.1rem;

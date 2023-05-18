@@ -44,7 +44,15 @@ const Share = () => {
     <div className={styles.share}>
       <div className={styles.shareWrapper}>
         <form className={styles.shareTop}>
-          <img src="/assets/person.png" alt="share" className={styles.avatar} />
+          <img
+            src={
+              !currentUser.profilePicture
+                ? "/assets/person.png"
+                : currentUser.profilePicture
+            }
+            alt="share"
+            className={styles.avatar}
+          />
           <textarea
             name="share"
             ref={textbox}

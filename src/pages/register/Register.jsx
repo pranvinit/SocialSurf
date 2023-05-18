@@ -9,6 +9,7 @@ import styles from "./register.module.css";
 
 const Register = () => {
   const [formInput, setFormInput] = useState({});
+  const [file, setFile] = useState(null);
 
   const dispatch = useDispatch();
   const { isLoading } = useSelector(authSelector);
@@ -25,7 +26,8 @@ const Register = () => {
     e.preventDefault();
     if (!formInput.displayName || !formInput.email || !formInput.password)
       return;
-    await dispatch(registerUserAsync(formInput));
+    await dispatch(registerUserAsync({ ...formInput, file }));
+    setFile(null);
     setFormInput({});
   };
 
@@ -33,6 +35,20 @@ const Register = () => {
     <div className={styles.register}>
       <form className={styles.box} onSubmit={handleSubmit}>
         <h3>Sign up to SocialSurf</h3>
+
+        <input
+          type="file"
+          id="fileInput"
+          className={styles.hiddenInput}
+          accept="image/*"
+          onChange={(e) => setFile(e.target.files[0])}
+        />
+        <label htmlFor="fileInput" className={styles.fileInputLabel}>
+          <img
+            src={!file ? "/assets/camera.png" : URL.createObjectURL(file)}
+            alt="camera"
+          />
+        </label>
         <div className={styles.field}>
           <label>Display Name</label>
           <input
@@ -68,15 +84,18 @@ const Register = () => {
         </div>
 
         <div className={styles.actions}>
-          <button type="submit" disabled={isLoading}>
-            Register
-          </button>
           <button
-            onClick={() => setFormInput({})}
+            onClick={() => {
+              setFile(null);
+              setFormInput({});
+            }}
             className={styles.cancel}
             disabled={isLoading}
           >
             Cancel
+          </button>
+          <button type="submit" disabled={isLoading}>
+            Register
           </button>
         </div>
         <div className={styles.login}>

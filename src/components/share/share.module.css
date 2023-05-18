@@ -23,7 +23,13 @@
   gap: 20px;
 }
 
-.avatar,
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .mediaIcon,
 .cancelImg {
   width: 40px;
@@ -35,6 +41,10 @@
   resize: none;
   flex: 1;
   font-size: 1.1rem;
+}
+
+.shareLabel {
+  font-weight: 700;
 }
 
 .shareHr {
@@ -67,7 +77,7 @@
   margin-inline: 30px;
 }
 
-label {
+.share label {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -76,7 +86,7 @@ label {
   transition: 0.2s;
 }
 
-label:hover {
+.share label:hover {
   color: #1ca0f2;
 }
 

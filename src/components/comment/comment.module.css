@@ -40,7 +40,7 @@
   color: #fff;
   padding: 5px 20px;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: 30px;
   cursor: pointer;
   box-shadow: rgba(7, 96, 213, 0.3) 0px 3px 8px;
@@ -48,6 +48,13 @@
 }
 
 .commentBottom button:nth-of-type(1) {
-  background-color: #f21c1c;
-  box-shadow: rgba(242, 28, 28, 0.3) 0px 3px 8px;
+  color: #000;
+  box-shadow: none;
+  background-color: transparent;
+}
+.commentBottom button:nth-of-type(1):hover {
+  background-color: #f2f2f2;
+}
+.commentBottom button:disabled {
+  cursor: not-allowed;
 }

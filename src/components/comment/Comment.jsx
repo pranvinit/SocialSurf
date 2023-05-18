@@ -18,8 +18,6 @@ export const Comment = ({ userId, postId, setComments, commentsCount }) => {
     setText("");
   };
 
-  console.log(commentsCount);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!text) return;
@@ -36,6 +34,7 @@ export const Comment = ({ userId, postId, setComments, commentsCount }) => {
     );
     const comment = {
       displayName: currentUser.displayName,
+      profilePicture: currentUser.profilePicture,
       text,
       created: Timestamp.now(),
     };

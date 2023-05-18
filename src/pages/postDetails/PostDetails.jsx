@@ -47,8 +47,6 @@ const PostDetails = () => {
     setComments(commentsData);
   };
 
-  console.log(comments);
-
   useEffect(() => {
     getPostDetails();
     getPostComments();
@@ -85,10 +83,16 @@ const PostDetails = () => {
         )}
         <hr className={styles.commentHr} />
         {comments.map((c) => (
-          <div key={c.id}>
+          <div className={styles.comment} key={c.id}>
             <div className={styles.commentTop}>
-              <div>{c.displayName[0]}</div>
-              <b>{c.displayName}</b>
+              <div className={styles.name}>
+                {!c.profilePicture ? (
+                  <div className={styles.avatar}>{c.displayName[0]}</div>
+                ) : (
+                  <img src={c.profilePicture} alt="profile" />
+                )}
+                <b>{c.displayName}</b>
+              </div>
               <span>{format(c.created.toDate())}</span>
             </div>
             <div className={styles.commentBottom}>

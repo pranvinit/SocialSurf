@@ -56,7 +56,11 @@ export const Post = ({ post, getDetails, commentsCountLocal }) => {
       <div className={styles.postWrapper}>
         <div className={styles.postTop}>
           <img
-            src={"/assets/person.png"}
+            src={
+              !currentUser.profilePicture
+                ? "/assets/person.png"
+                : currentUser.profilePicture
+            }
             alt="profile"
             className={styles.postProfileImg}
           />

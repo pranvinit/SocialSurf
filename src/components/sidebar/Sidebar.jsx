@@ -65,20 +65,28 @@ export const Sidebar = () => {
       )}
       {!loading && (
         <div className={styles.usersList}>
-          {users.map((u) => (
-            <div key={u.id} className={styles.user}>
-              <div>{u.displayName[0]}</div>
-              <div>{u.displayName}</div>
-              <button
-                onClick={() => {
-                  !u.isFollowing ? handleFollow(u.uid) : handleUnfollow(u.uid);
-                }}
-                className={u.isFollowing ? styles.unfollow : ""}
-              >
-                {!u.isFollowing ? "Follow" : "Unfollow"}
-              </button>
-            </div>
-          ))}
+          {users.length === 0 && <h3>You are not following anyone.</h3>}
+          {users.length !== 0 &&
+            users.map((u) => (
+              <div key={u.id} className={styles.user}>
+                {!u.profilePicture ? (
+                  <div className={styles.avatar}>{u.displayName[0]}</div>
+                ) : (
+                  <img src={u.profilePicture} alt="profile" />
+                )}
+                <div className={styles.displayName}>{u.displayName}</div>
+                <button
+                  onClick={() => {
+                    !u.isFollowing
+                      ? handleFollow(u.uid)
+                      : handleUnfollow(u.uid);
+                  }}
+                  className={u.isFollowing ? styles.unfollow : ""}
+                >
+                  {!u.isFollowing ? "Follow" : "Unfollow"}
+                </button>
+              </div>
+            ))}
         </div>
       )}
     </div>

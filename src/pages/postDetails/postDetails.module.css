@@ -31,3 +31,53 @@
 .commentHr {
   margin-block: 10px;
 }
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 15px auto;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.commentTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.name {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.name > img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.name b {
+  font-size: 1.25rem;
+}
+
+.avatar {
+  background-color: #4267b2;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.5rem;
+  width: 40px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.commentBottom p {
+  font-size: 1.25rem;
+}
