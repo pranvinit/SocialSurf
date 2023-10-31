@@ -34,10 +34,11 @@ export const Comment = ({ userId, postId, setComments, commentsCount }) => {
     );
     const comment = {
       displayName: currentUser.displayName,
-      profilePicture: currentUser.profilePicture,
       text,
       created: Timestamp.now(),
     };
+    if (currentUser.profilePicture)
+      comment.profilePicture = currentUser.profilePicture;
     const docRef = await addDoc(commentsRef, comment);
     await setDoc(
       postRef,

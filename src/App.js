@@ -45,8 +45,14 @@ function App() {
       path: "/",
       element: <Navbar />,
       children: [
-        { path: "/login", element: <Login /> },
-        { path: "/register", element: <Register /> },
+        {
+          path: "/login",
+          element: <Login />,
+        },
+        {
+          path: "/register",
+          element: <Register />,
+        },
         {
           path: "/profile",
           element: (
@@ -78,7 +84,8 @@ function App() {
 
   // firebase auth observer
   useEffect(() => {
-    dispatch(fetchUser());
+    if (!currentUser) dispatch(fetchUser());
+
     const unsub = onAuthStateChanged(auth, (user) => {
       dispatch(authenticateUserAsync(user?.uid));
     });

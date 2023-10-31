@@ -100,7 +100,7 @@ a[class="active"] {
 }
 
 .searchWrapper {
-  min-height: 575px;
+  min-height: 475px;
   width: 40vw;
   padding: 30px;
   background-color: #fff;
@@ -164,7 +164,7 @@ a[class="active"] {
 
 .searchList {
   overflow-y: scroll;
-  height: 500px;
+  height: 450px;
   width: 100%;
   display: flex;
   flex-direction: column;

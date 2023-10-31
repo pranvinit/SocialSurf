@@ -18,8 +18,6 @@ export const Feed = () => {
     dispatch(getPostsAsync(currentUser));
   }, [currentUser]);
 
-  console.log(posts);
-
   return (
     <div className={styles.feed}>
       <div className={styles.feedWrapper}>

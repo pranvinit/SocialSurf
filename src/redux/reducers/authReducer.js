@@ -14,7 +14,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 export const THEMES = { default: "LIGHT", dark: "DARK" };
 
 const INITIAL_STATE = {
-  currentUser: null,
+  currentUser: JSON.parse(sessionStorage.getItem("currentUser")) || null,
   isLoading: false,
   error: null,
   preferences: { theme: THEMES.default },
@@ -23,10 +23,11 @@ const INITIAL_STATE = {
 export const authenticateUserAsync = createAsyncThunk(
   "auth/authenticateUser",
   async (uid, thunkAPI) => {
-    if (!uid) return thunkAPI.dispatch(setUser({}));
+    if (!uid) thunkAPI.dispatch(setUser({}));
     const docRef = doc(db, "users", uid);
     const currentUser = await getDoc(docRef);
     thunkAPI.dispatch(setUser(currentUser.data()));
+    sessionStorage.setItem("currentUser", JSON.stringify(currentUser.data()));
   }
 );
 
@@ -71,6 +72,7 @@ export const logoutUserAsync = createAsyncThunk(
   async (_, thunkAPI) => {
     await signOut(auth);
     thunkAPI.dispatch(logoutUser());
+    sessionStorage.removeItem("currentUser");
   }
 );
 

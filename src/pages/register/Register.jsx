@@ -26,7 +26,7 @@ const Register = () => {
     e.preventDefault();
     if (!formInput.displayName || !formInput.email || !formInput.password)
       return;
-    await dispatch(registerUserAsync({ ...formInput, file }));
+    dispatch(registerUserAsync({ ...formInput, file }));
     setFile(null);
     setFormInput({});
   };

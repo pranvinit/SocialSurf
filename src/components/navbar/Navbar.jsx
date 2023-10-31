@@ -35,14 +35,13 @@ export const Navbar = () => {
     const filteredUserData = usersData.filter(
       (u) =>
         u.uid !== currentUser.uid &&
+        u.displayName &&
         u.displayName.toLowerCase().includes(searchInput.toLowerCase())
     );
 
     setSearchResult(filteredUserData);
     setLoading(false);
   };
-
-  console.log(searchResult);
 
   useEffect(() => {
     if (currentUser) getSearchResult();
