@@ -36,6 +36,13 @@ const Share = () => {
     resetInput();
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && e.ctrlKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+
   useEffect(() => {
     autosize(textbox.current);
   }, []);
@@ -58,6 +65,7 @@ const Share = () => {
             ref={textbox}
             value={text}
             onChange={({ target }) => setText(target.value)}
+            onKeyDown={handleKeyDown}
             placeholder={`What's on your mind ${currentUser.displayName}`}
             rows={1}
             required

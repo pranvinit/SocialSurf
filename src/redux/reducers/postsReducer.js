@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import {
   Timestamp,
   addDoc,
+  deleteDoc,
   collection,
   doc,
   getDocs,
@@ -14,6 +15,7 @@ import {
 } from "firebase/firestore";
 
 const INITIAL_STATE = { posts: [], isLoading: false, error: null };
+
 export const getPostsAsync = createAsyncThunk(
   "posts/fetchPosts",
   async (currentUser) => {
@@ -44,7 +46,10 @@ export const getPostsAsync = createAsyncThunk(
       id: doc.id,
       ...doc.data(),
     }));
-    return [...userFeedData, ...postsData];
+
+    const allPosts = [...postsData, ...userFeedData];
+
+    return allPosts;
   }
 );
 
@@ -145,6 +150,23 @@ export const removeDislikePostAsync = createAsyncThunk(
   }
 );
 
+export const deletePostAsync = createAsyncThunk(
+  "posts/deletePost",
+  async ({ post, currentUserId }, thunkAPI) => {
+    if (post.uid !== currentUserId) {
+      return toast.error("You are not authorized to delete this post.");
+    }
+    try {
+      const postRef = doc(db, "users", post.uid, "posts", post.id);
+      await deleteDoc(postRef);
+      thunkAPI.dispatch(removePost(post.id));
+      toast.success("Post deleted successfully.");
+    } catch (e) {
+      console.log(e);
+    }
+  }
+);
+
 const postSlice = createSlice({
   name: "posts",
   initialState: INITIAL_STATE,
@@ -158,6 +180,9 @@ const postSlice = createSlice({
       });
       state.posts = updatedPosts;
       state.isLoading = false;
+    },
+    removePost: (state, { payload }) => {
+      state.posts = state.posts.filter((post) => post.id !== payload);
     },
   },
   extraReducers: (builder) => {
@@ -191,6 +216,6 @@ const postSlice = createSlice({
 });
 
 export const postsReducer = postSlice.reducer;
-export const { setUpdatedPosts } = postSlice.actions;
+export const { setUpdatedPosts, removePost } = postSlice.actions;
 
 export const postsSelector = (state) => state.postsReducer;

@@ -2,6 +2,7 @@ import { format } from "timeago.js";
 import { useDispatch, useSelector } from "react-redux";
 import { authSelector } from "../../redux/reducers/authReducer";
 import {
+  deletePostAsync,
   dislikePostAsync,
   likePostAsync,
   removeDislikePostAsync,
@@ -49,6 +50,11 @@ export const Post = ({ post, getDetails, commentsCountLocal }) => {
   const handleRemoveDislike = () => {
     dispatch(removeDislikePostAsync({ post, currentUserId: currentUser.uid }));
     if (getDetails) getDetails();
+  };
+
+  const handleRemove = () => {
+    dispatch(deletePostAsync({ post, currentUserId: currentUser.uid }));
+    if (getDetails) navigate("/");
   };
 
   return (
@@ -129,6 +135,16 @@ export const Post = ({ post, getDetails, commentsCountLocal }) => {
             />
             <span>Share</span>
           </div>
+          {currentUser.uid === post.uid && (
+            <div className={styles.postBottomItem} onClick={handleRemove}>
+              <img
+                src={"/assets/delete.png"}
+                alt="delete"
+                className={styles.deleteIcon}
+              />
+              <span>Remove</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

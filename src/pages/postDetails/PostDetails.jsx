@@ -24,7 +24,7 @@ const PostDetails = () => {
   const getPostDetails = async () => {
     const docRef = doc(db, "users", uid, "posts", postId);
     const post = await getDoc(docRef);
-    setPost(post.data());
+    setPost({ id: post.id, ...post.data() });
   };
 
   const getPostComments = async () => {

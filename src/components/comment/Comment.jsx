@@ -51,6 +51,13 @@ export const Comment = ({ userId, postId, setComments, commentsCount }) => {
     toast.success("Comment added successfully.");
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && e.ctrlKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+
   useEffect(() => {
     autosize(textbox.current);
   }, []);
@@ -64,6 +71,7 @@ export const Comment = ({ userId, postId, setComments, commentsCount }) => {
             ref={textbox}
             value={text}
             onChange={({ target }) => setText(target.value)}
+            onKeyDown={handleKeyDown}
             placeholder={`Add a comment ${currentUser.displayName}`}
             rows={1}
             required
