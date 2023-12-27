@@ -16,6 +16,19 @@ import {
 
 const INITIAL_STATE = { posts: [], isLoading: false, error: null };
 
+const deletePostComments = async (post) => {
+  const commentsRef = collection(
+    db,
+    "users",
+    post.uid,
+    "posts",
+    post.id,
+    "comments"
+  );
+  const comments = await getDocs(commentsRef);
+  await Promise.all(comments.docs.map((doc) => deleteDoc(doc.ref)));
+};
+
 export const getPostsAsync = createAsyncThunk(
   "posts/fetchPosts",
   async (currentUser) => {
@@ -161,6 +174,7 @@ export const deletePostAsync = createAsyncThunk(
       await deleteDoc(postRef);
       thunkAPI.dispatch(removePost(post.id));
       toast.success("Post deleted successfully.");
+      await deletePostComments(post);
     } catch (e) {
       console.log(e);
     }
